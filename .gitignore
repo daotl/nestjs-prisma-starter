@@ -7,3 +7,7 @@ coverage/
 
 prisma/migrations/dev/
 .env
+
+.eslintcache
+
+.idea/
