@@ -1,19 +1,15 @@
 # Instructions
 
-Starter template for 😻 [NestJS](https://nestjs.com/) and [Prisma](https://www.prisma.io/).
+Starter template for 😻 [NestJS](https://nestjs.com/) and [Prisma](https://www.prisma.io/) for DAOT projects.
 
 > Checkout [NestJS Prisma Schematics](https://github.com/marcjulian/nestjs-prisma) to automatically add Prisma support to your Nest application.
 
 ## Version
 
-| Branch                                                                                                       |  Nest | Prisma                                               |  Graphql                                                              |
-| ------------------------------------------------------------------------------------------------------------ | ----- | ---------------------------------------------------- | --------------------------------------------------------------------- |
-| main                                                                                                       | v8    | [v2](https://github.com/prisma/prisma2)         | [Code-first](https://docs.nestjs.com/graphql/quick-start#code-first)  |
-| [nest-7](https://github.com/fivethree-team/nestjs-prisma-starter/tree/nest-7)                                                                                                       | v7    | [v2](https://github.com/prisma/prisma2)         | [Code-first](https://docs.nestjs.com/graphql/quick-start#code-first)  |
-| [nest-6-prisma2-code-first](https://github.com/fivethree-team/nestjs-prisma-starter/tree/nest-6-prisma2-code-first) | v6    | [v2-preview](https://github.com/prisma/prisma2) | [Code-first](https://github.com/19majkel94/type-graphql)              |
-| [nest-6-code-first](https://github.com/fivethree-team/nestjs-prisma-starter/tree/nest-6-code-first)         | v6    | [v1](https://github.com/prisma/prisma)               | [Code-first](https://github.com/19majkel94/type-graphql)              |
-| [nest-6-sdl-first](https://github.com/fivethree-team/nestjs-prisma-starter/tree/nest-6-sdl-first)                                                                                        | v6    | [v1](https://github.com/prisma/prisma)               | [SDL First](https://docs.nestjs.com/graphql/quick-start#schema-first) |
-| [nest-5](https://github.com/fivethree-team/nestjs-prisma-starter/tree/nest-5)                     | v5    | [v1](https://github.com/prisma/prisma)               | [SDL First](https://docs.nestjs.com/graphql/quick-start#schema-first) |
+| Branch  |  Nest      | Prisma                                  |  Graphql                                                          |
+| ------- | ------------- | --------------------------------------- | -------------------------------------------------------------------- |
+| master  | v8 w/ Fastify | [v2](https://github.com/prisma/prisma2) | [Code-first](https://docs.nestjs.com/graphql/quick-start#code-first) |
+| express | v8 w/ Express | [v2](https://github.com/prisma/prisma2) | [Code-first](https://docs.nestjs.com/graphql/quick-start#code-first) |
 
 ## Features
 
