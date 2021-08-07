@@ -1,9 +1,9 @@
-import { PrismaService } from './../prisma/prisma.service'
+import { PrismaService } from '../prisma/prisma.service'
 import {
-  Injectable,
-  NotFoundException,
   BadRequestException,
   ConflictException,
+  Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
@@ -73,13 +73,16 @@ export class AuthService {
     })
   }
 
-  validateUser(userId: string): Promise<User> {
+  validateUser(userId: string): Promise<User | null> {
     return this.prisma.user.findUnique({ where: { id: userId } })
   }
 
-  getUserFromToken(token: string): Promise<User> {
-    const id = this.jwtService.decode(token)['userId']
-    return this.prisma.user.findUnique({ where: { id } })
+  getUserFromToken(token: string): Promise<User> | undefined {
+    const { userId: id } = this.jwtService.decode(token) as { userId?: string }
+    if (!id) {
+      return undefined
+    }
+    return this.prisma.user.findUnique({ where: { id } }) as Promise<User>
   }
 
   generateTokens(payload: { userId: string }): Token {
@@ -94,22 +97,24 @@ export class AuthService {
   }
 
   private generateRefreshToken(payload: { userId: string }): string {
-    const securityConfig = this.configService.get<SecurityConfig>('security')
+    const securityConfig = this.configService.get<SecurityConfig>('security')!
     return this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_REFRESH_SECRET'),
       expiresIn: securityConfig.refreshIn,
     })
   }
 
-  refreshToken(token: string) {
+  refreshToken(token: string): Token | undefined {
     try {
-      const { userId } = this.jwtService.verify(token, {
+      const { userId }: { userId?: string } = this.jwtService.verify(token, {
         secret: this.configService.get('JWT_REFRESH_SECRET'),
       })
 
-      return this.generateTokens({
-        userId,
-      })
+      return userId
+        ? this.generateTokens({
+            userId,
+          })
+        : undefined
     } catch (e) {
       throw new UnauthorizedException()
     }

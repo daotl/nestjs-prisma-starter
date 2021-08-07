@@ -1,4 +1,4 @@
-import { PrismaModule } from './../../prisma/prisma.module'
+import { PrismaModule } from '../../prisma/prisma.module'
 import { PostResolver } from './post.resolver'
 import { Module } from '@nestjs/common'
 

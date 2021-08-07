@@ -6,10 +6,10 @@ export class PageInfo {
   endCursor?: string
 
   // @Field((type) => Boolean)
-  hasNextPage: boolean
+  hasNextPage!: boolean
 
   // @Field((type) => Boolean)
-  hasPreviousPage: boolean
+  hasPreviousPage!: boolean
 
   // @Field((type) => String, { nullable: true })
   startCursor?: string

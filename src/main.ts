@@ -9,16 +9,16 @@ import {
   SwaggerConfig,
 } from './configs/config.interface'
 
-async function bootstrap() {
+async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule)
 
   // Validation
   app.useGlobalPipes(new ValidationPipe())
 
   const configService = app.get(ConfigService)
-  const nestConfig = configService.get<NestConfig>('nest')
-  const corsConfig = configService.get<CorsConfig>('cors')
-  const swaggerConfig = configService.get<SwaggerConfig>('swagger')
+  const nestConfig = configService.get<NestConfig>('nest')!
+  const corsConfig = configService.get<CorsConfig>('cors')!
+  const swaggerConfig = configService.get<SwaggerConfig>('swagger')!
 
   // Swagger Api
   if (swaggerConfig.enabled) {
@@ -37,6 +37,6 @@ async function bootstrap() {
     app.enableCors()
   }
 
-  await app.listen(process.env.PORT || nestConfig.port || 3000)
+  await app.listen(process.env['PORT'] || nestConfig.port || 3000)
 }
-bootstrap()
+void bootstrap()

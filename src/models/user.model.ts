@@ -1,4 +1,4 @@
-import { ObjectType, registerEnumType, HideField } from '@nestjs/graphql'
+import { HideField, ObjectType, registerEnumType } from '@nestjs/graphql'
 import { Post } from './post.model'
 import { BaseModel } from './base.model'
 
@@ -14,11 +14,11 @@ registerEnumType(Role, {
 
 @ObjectType()
 export class User extends BaseModel {
-  email: string
+  email!: string
   firstname?: string
   lastname?: string
-  role: Role
-  posts: Post[]
+  role!: Role
+  posts!: Post[]
   @HideField()
-  password: string
+  password!: string
 }

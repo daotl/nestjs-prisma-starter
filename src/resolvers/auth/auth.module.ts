@@ -1,5 +1,5 @@
-import { PrismaModule } from './../../prisma/prisma.module'
-import { PasswordService } from './../../services/password.service'
+import { PrismaModule } from '../../prisma/prisma.module'
+import { PasswordService } from '../../services/password.service'
 import { GqlAuthGuard } from '../../guards/gql-auth.guard'
 import { AuthService } from '../../services/auth.service'
 import { AuthResolver } from './auth.resolver'
@@ -15,7 +15,7 @@ import { SecurityConfig } from 'src/configs/config.interface'
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       useFactory: async (configService: ConfigService) => {
-        const securityConfig = configService.get<SecurityConfig>('security')
+        const securityConfig = configService.get<SecurityConfig>('security')!
         return {
           secret: configService.get<string>('JWT_ACCESS_SECRET'),
           signOptions: {

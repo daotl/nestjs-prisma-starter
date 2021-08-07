@@ -1,5 +1,5 @@
-import { PrismaService } from './../prisma/prisma.service'
-import { Injectable, BadRequestException } from '@nestjs/common'
+import { PrismaService } from '../prisma/prisma.service'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { PasswordService } from './password.service'
 import { ChangePasswordInput } from '../resolvers/user/dto/change-password.input'
 import { UpdateUserInput } from '../resolvers/user/dto/update-user.input'
@@ -11,6 +11,7 @@ export class UserService {
     private passwordService: PasswordService,
   ) {}
 
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
   updateUser(userId: string, newUserData: UpdateUserInput) {
     return this.prisma.user.update({
       data: newUserData,
@@ -20,6 +21,7 @@ export class UserService {
     })
   }
 
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
   async changePassword(
     userId: string,
     userPassword: string,

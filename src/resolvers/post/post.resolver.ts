@@ -1,15 +1,15 @@
-import { PrismaService } from './../../prisma/prisma.service'
+import { PrismaService } from '../../prisma/prisma.service'
 import { PaginationArgs } from '../../common/pagination/pagination.args'
 import { PostIdArgs } from '../../models/args/post-id.args'
 import { UserIdArgs } from '../../models/args/user-id.args'
 import {
-  Resolver,
-  Query,
-  Parent,
   Args,
-  ResolveField,
-  Subscription,
   Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+  Subscription,
 } from '@nestjs/graphql'
 import { Post } from '../../models/post.model'
 import { PostOrder } from '../../models/inputs/post-order.input'
@@ -24,17 +24,18 @@ import { UseGuards } from '@nestjs/common'
 
 const pubSub = new PubSub()
 
-@Resolver(() => Post)
+@Resolver((_of: unknown) => Post)
 export class PostResolver {
   constructor(private prisma: PrismaService) {}
 
-  @Subscription(() => Post)
-  postCreated() {
+  @Subscription((_returns) => Post)
+  postCreated(): AsyncIterator<Post> {
     return pubSub.asyncIterator('postCreated')
   }
 
   @UseGuards(GqlAuthGuard)
-  @Mutation(() => Post)
+  @Mutation((_returns) => Post)
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
   async createPost(
     @UserEntity() user: User,
     @Args('data') data: CreatePostInput,
@@ -47,11 +48,12 @@ export class PostResolver {
         authorId: user.id,
       },
     })
-    pubSub.publish('postCreated', { postCreated: newPost })
+    void pubSub.publish('postCreated', { postCreated: newPost })
     return newPost
   }
 
-  @Query(() => PostConnection)
+  @Query((_returns) => PostConnection)
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
   async publishedPosts(
     @Args() { after, before, first, last }: PaginationArgs,
     @Args({ name: 'query', type: () => String, nullable: true })
@@ -63,7 +65,7 @@ export class PostResolver {
     })
     orderBy: PostOrder,
   ) {
-    const a = await findManyCursorConnection(
+    return await findManyCursorConnection(
       (args) =>
         this.prisma.post.findMany({
           include: { author: true },
@@ -71,7 +73,7 @@ export class PostResolver {
             published: true,
             title: { contains: query || '' },
           },
-          orderBy: orderBy ? { [orderBy.field]: orderBy.direction } : null,
+          orderBy: orderBy ? { [orderBy.field]: orderBy.direction } : undefined,
           ...args,
         }),
       () =>
@@ -83,10 +85,10 @@ export class PostResolver {
         }),
       { first, last, before, after },
     )
-    return a
   }
 
-  @Query(() => [Post])
+  @Query((_returns) => [Post])
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
   userPosts(@Args() id: UserIdArgs) {
     return this.prisma.user
       .findUnique({ where: { id: id.userId } })
@@ -101,12 +103,14 @@ export class PostResolver {
     // });
   }
 
-  @Query(() => Post)
+  @Query((_returns) => Post)
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
   async post(@Args() id: PostIdArgs) {
     return this.prisma.post.findUnique({ where: { id: id.postId } })
   }
 
   @ResolveField('author')
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
   async author(@Parent() post: Post) {
     return this.prisma.post.findUnique({ where: { id: post.id } }).author()
   }

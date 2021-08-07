@@ -17,5 +17,5 @@ registerEnumType(PostOrderField, {
 
 @InputType()
 export class PostOrder extends Order {
-  field: PostOrderField
+  field!: PostOrderField
 }

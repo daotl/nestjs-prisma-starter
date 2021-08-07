@@ -4,8 +4,8 @@ import { BaseModel } from './base.model'
 
 @ObjectType()
 export class Post extends BaseModel {
-  title: string
-  content: string
-  published: boolean
-  author: User
+  title!: string
+  content!: string
+  published!: boolean
+  author!: User
 }
