@@ -1,6 +1,6 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql'
-import { PageInfo } from './page-info.model'
 import { Type } from '@nestjs/common'
+import { PageInfo } from './page-info.model'
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
 export default function Paginated<TItem>(TItemClass: Type<TItem>) {

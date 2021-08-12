@@ -1,5 +1,3 @@
-import { PrismaService } from '../../prisma/prisma.service'
-import { GqlAuthGuard } from '../../guards/gql-auth.guard'
 import {
   Args,
   Mutation,
@@ -9,10 +7,12 @@ import {
   Resolver,
 } from '@nestjs/graphql'
 import { UseGuards } from '@nestjs/common'
-import { UserEntity } from '../../decorators/user.decorator'
-import { User } from '../../models/user.model'
+import { PrismaService } from '~/prisma/prisma.service'
+import { UserService } from '~/services/user.service'
+import { UserEntity } from '~/decorators/user.decorator'
+import { GqlAuthGuard } from '~/guards/gql-auth.guard'
+import { User } from '~/models/user.model'
 import { ChangePasswordInput } from './dto/change-password.input'
-import { UserService } from '../../services/user.service'
 import { UpdateUserInput } from './dto/update-user.input'
 
 @Resolver((_of: unknown) => User)

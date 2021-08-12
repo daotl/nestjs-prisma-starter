@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
-import { compare, hash } from 'bcrypt'
 import { ConfigService } from '@nestjs/config'
-import { SecurityConfig } from 'src/configs/config.interface'
+import { compare, hash } from 'bcrypt'
+import { SecurityConfig } from '~/configs/config.interface'
 
 @Injectable()
 export class PasswordService {

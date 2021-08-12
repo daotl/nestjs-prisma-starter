@@ -1,8 +1,8 @@
-import { Test, TestingModule } from '@nestjs/testing'
-import request from 'supertest'
-import { AppModule } from '../src/app.module'
-import { Chance } from 'chance'
 import { INestApplication } from '@nestjs/common'
+import { Test, TestingModule } from '@nestjs/testing'
+import { Chance } from 'chance'
+import request from 'supertest'
+import { AppModule } from '~/app.module'
 
 const chance = new Chance()
 

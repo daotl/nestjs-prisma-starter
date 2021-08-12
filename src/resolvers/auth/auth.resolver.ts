@@ -1,11 +1,11 @@
-import { Auth } from '../../models/auth.model'
-import { Token } from '../../models/token.model'
-import { LoginInput } from './dto/login.input'
 import { Args, Mutation, Parent, ResolveField, Resolver } from '@nestjs/graphql'
-import { AuthService } from '../../services/auth.service'
-import { SignupInput } from './dto/signup.input'
-import { RefreshTokenInput } from './dto/refresh-token.input'
 import { User } from '@prisma/client'
+import { AuthService } from '~/services/auth.service'
+import { Auth } from '~/models/auth.model'
+import { Token } from '~/models/token.model'
+import { LoginInput } from './dto/login.input'
+import { RefreshTokenInput } from './dto/refresh-token.input'
+import { SignupInput } from './dto/signup.input'
 
 @Resolver((_of: unknown) => Auth)
 export class AuthResolver {
