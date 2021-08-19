@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { Chance } from 'chance'
-import { AppService } from '~/services/app.service'
 import { AppController } from './app.controller'
+import { AppService } from '~/services/app.service'
 
 const chance = new Chance()
 
@@ -22,10 +22,16 @@ describe('AppController', () => {
       expect(appController.getHello()).toBe('Hello World!')
     })
   })
-  describe('hello/:name', () => {
+  describe('hello/:name (GET)', () => {
     it('should return "Hello ${name}!"', () => {
       const name = chance.name()
       expect(appController.getHelloName(name)).toBe(`Hello ${name}!`)
+    })
+  })
+  describe('hello (POST)', () => {
+    it('should return "Hello ${name}!"', () => {
+      const name = chance.name()
+      expect(appController.postHelloName({ name })).toBe(`Hello ${name}!`)
     })
   })
 })

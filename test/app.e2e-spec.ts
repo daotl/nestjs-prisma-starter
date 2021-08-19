@@ -32,4 +32,13 @@ describe('AppController (e2e)', () => {
       .expect(200)
       .expect(`Hello ${name}!`)
   })
+
+  it('/hello (POST)', () => {
+    const name = chance.name()
+    return request(app.getHttpServer())
+      .post(`/hello`)
+      .send({ name })
+      .expect(200)
+      .expect(`Hello ${name}!`)
+  })
 })
