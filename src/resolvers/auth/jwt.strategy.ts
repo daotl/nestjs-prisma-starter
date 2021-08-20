@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config'
 import { PassportStrategy } from '@nestjs/passport'
 import { User } from '@prisma/client'
 import { ExtractJwt, Strategy } from 'passport-jwt'
+import type { Config } from '~/configs/config.schema'
 import { AuthService } from '~/services/auth.service'
 import { JwtDto } from './dto/jwt.dto'
 
@@ -10,11 +11,13 @@ import { JwtDto } from './dto/jwt.dto'
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
     private readonly authService: AuthService,
-    readonly configService: ConfigService,
+    readonly configService: ConfigService<Config>,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: configService.get<string>('JWT_ACCESS_SECRET'),
+      secretOrKey: configService.get('security.jwtAccessSecret', {
+        infer: true,
+      })!,
     })
   }
 

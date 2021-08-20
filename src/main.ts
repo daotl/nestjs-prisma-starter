@@ -1,12 +1,14 @@
-import { ValidationPipe } from '@nestjs/common'
+import 'reflect-metadata'
+import { Logger, ValidationPipe } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
-import {
+import type {
+  Config,
   CorsConfig,
   NestConfig,
   SwaggerConfig,
-} from './configs/config.interface'
+} from './configs/config.schema'
 import { AppModule } from './app.module'
 
 async function bootstrap(): Promise<void> {
@@ -24,10 +26,12 @@ async function bootstrap(): Promise<void> {
     }),
   )
 
-  const configService = app.get(ConfigService)
-  const nestConfig = configService.get<NestConfig>('nest')!
-  const corsConfig = configService.get<CorsConfig>('cors')!
-  const swaggerConfig = configService.get<SwaggerConfig>('swagger')!
+  const configService = app.get<ConfigService<Config>>(ConfigService)
+  const nestConfig: NestConfig = configService.get('nest', { infer: true })!
+  const corsConfig: CorsConfig = configService.get('cors', { infer: true })!
+  const swaggerConfig: SwaggerConfig = configService.get('swagger', {
+    infer: true,
+  })!
 
   // Swagger Api
   if (swaggerConfig.enabled) {
@@ -46,6 +50,8 @@ async function bootstrap(): Promise<void> {
     app.enableCors()
   }
 
-  await app.listen(process.env['PORT'] || nestConfig.port || 3000)
+  const logger = new Logger('main.ts')
+  logger.log(`Start listening on: ${nestConfig.port}`)
+  await app.listen(nestConfig.port)
 }
 void bootstrap()

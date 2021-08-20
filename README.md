@@ -4,18 +4,6 @@ Starter template for 😻 [NestJS](https://nestjs.com/) and [Prisma](https://www
 
 > Checkout [NestJS Prisma Schematics](https://github.com/marcjulian/nestjs-prisma) to automatically add Prisma support to your Nest application.
 
-## Commit changes
-
-Commits are linted with [commitlint](https://github.com/conventional-changelog/commitlint) before accepted.
-
-Commit with [@commitlint/cz-commitlint](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/cz-commitlint):
-```shell
-git-cz
-```
-
-Or still use `git commit` and follow [the Conventional Commits spec](https://www.conventionalcommits.org/en/v1.0.0/#summary)
-with rules from [@commitlint/config-conventional](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional).
-
 ## Version
 
 | Branch  |  Nest      | Prisma                                  |  Graphql                                                          |
@@ -43,6 +31,7 @@ with rules from [@commitlint/config-conventional](https://github.com/conventiona
     - [4. Prisma: Prisma Client JS](#4-prisma-client-js)
     - [5. Seed the database data with this script](#5-seed-the-database-data-with-this-script)
     - [6. Start NestJS Server](#6-start-nestjs-server)
+  - [Development](#development)
   - [GraphQL Playground](#graphql-playground)
   - [Rest Api](#rest-api)
   - [Test](#test)
@@ -158,6 +147,34 @@ npm run start:prod
 ```
 
 GraphQL Playground for the NestJS Server is available here: http://localhost:3000/graphql
+
+**[⬆ back to top](#overview)**
+
+## Development
+
+### Commit changes
+
+Commits are linted with [commitlint](https://github.com/conventional-changelog/commitlint) before accepted.
+
+Commit with [@commitlint/cz-commitlint](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/cz-commitlint):
+```shell
+git-cz
+```
+
+Or still use `git commit` and follow [the Conventional Commits spec](https://www.conventionalcommits.org/en/v1.0.0/#summary)
+with rules from [@commitlint/config-conventional](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional).
+
+### Using `ts-node`
+
+To run code with `ts-node`:
+```shell
+ts-node -r tsconfig-paths/register src/index.ts
+```
+
+Or:
+```shell
+node -r ts-node/register -r tsconfig-paths/register src/index.ts
+```
 
 **[⬆ back to top](#overview)**
 

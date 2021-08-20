@@ -3,7 +3,7 @@ import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { GraphQLModule } from '@nestjs/graphql'
 import config from '~/configs/config'
-import { GraphqlConfig } from '~/configs/config.interface'
+import type { Config, GraphqlConfig } from '~/configs/config.schema'
 import { AuthModule } from '~/resolvers/auth/auth.module'
 import { UserModule } from '~/resolvers/user/user.module'
 import { PostModule } from '~/resolvers/post/post.module'
@@ -19,8 +19,10 @@ type Req = { req: IncomingMessage }
   imports: [
     ConfigModule.forRoot({ isGlobal: true, load: [config] }),
     GraphQLModule.forRootAsync({
-      useFactory: async (configService: ConfigService) => {
-        const graphqlConfig = configService.get<GraphqlConfig>('graphql')!
+      useFactory: async (configService: ConfigService<Config>) => {
+        const graphqlConfig: GraphqlConfig = configService.get('graphql', {
+          infer: true,
+        })!
         return {
           installSubscriptionHandlers: true,
           buildSchemaOptions: {

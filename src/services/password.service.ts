@@ -1,20 +1,18 @@
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { compare, hash } from 'bcrypt'
-import { SecurityConfig } from '~/configs/config.interface'
+import type { Config, SecurityConfig } from '~/configs/config.schema'
 
 @Injectable()
 export class PasswordService {
   get bcryptSaltRounds(): string | number {
-    const securityConfig = this.configService.get<SecurityConfig>('security')!
-    const saltOrRounds = securityConfig.bcryptSaltOrRound
-
-    return Number.isInteger(Number(saltOrRounds))
-      ? Number(saltOrRounds)
-      : saltOrRounds
+    const securityConfig: SecurityConfig = this.configService.get('security', {
+      infer: true,
+    })!
+    return securityConfig.bcryptSalt || securityConfig.bcryptRound
   }
 
-  constructor(private configService: ConfigService) {}
+  constructor(private configService: ConfigService<Config>) {}
 
   validatePassword(password: string, hashedPassword: string): Promise<boolean> {
     return compare(password, hashedPassword)
