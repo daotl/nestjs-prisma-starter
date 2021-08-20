@@ -13,7 +13,16 @@ async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule)
 
   // Validation
-  app.useGlobalPipes(new ValidationPipe())
+  app.useGlobalPipes(
+    new ValidationPipe({
+      // automatically transform payloads to be objects typed according to their DTO classes or primitive types.
+      transform: true,
+      // strip validated (returned) object of any properties that do not use any validation decorators.
+      whitelist: true,
+      // instead of stripping non-whitelisted properties validator will throw an exception.
+      forbidNonWhitelisted: true,
+    }),
+  )
 
   const configService = app.get(ConfigService)
   const nestConfig = configService.get<NestConfig>('nest')!
