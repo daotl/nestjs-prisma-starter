@@ -1,16 +1,16 @@
-import { ObjectType } from '@nestjs/graphql';
+import { ObjectType } from '@nestjs/graphql'
 
 @ObjectType()
 export class PageInfo {
   // @Field((type) => String, { nullable: true })
-  endCursor?: string;
+  endCursor?: string
 
   // @Field((type) => Boolean)
-  hasNextPage: boolean;
+  hasNextPage: boolean
 
   // @Field((type) => Boolean)
-  hasPreviousPage: boolean;
+  hasPreviousPage: boolean
 
   // @Field((type) => String, { nullable: true })
-  startCursor?: string;
+  startCursor?: string
 }

@@ -1,4 +1,4 @@
-import { Config } from './config.interface';
+import { Config } from './config.interface'
 
 const config: Config = {
   nest: {
@@ -25,6 +25,6 @@ const config: Config = {
     refreshIn: '7d',
     bcryptSaltOrRound: 10,
   },
-};
+}
 
-export default (): Config => config;
+export default (): Config => config
