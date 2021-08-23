@@ -8,7 +8,7 @@ import {
 import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 import { Prisma, User } from '@prisma/client'
-import type { Config, SecurityConfig } from '~/configs/config.schema'
+import type { Config, JwtConfig } from '~/configs/config.schema'
 import { PrismaService } from '~/prisma/prisma.service'
 import { PasswordService } from './password.service'
 import { SignupInput } from '~/resolvers/auth/dto/signup.input'
@@ -97,19 +97,19 @@ export class AuthService {
   }
 
   private generateRefreshToken(payload: { userId: string }): string {
-    const securityConfig: SecurityConfig = this.configService.get('security', {
+    const jwtConfig: JwtConfig = this.configService.get('security.jwt', {
       infer: true,
     })!
     return this.jwtService.sign(payload, {
-      secret: securityConfig.jwtRefreshSecret,
-      expiresIn: securityConfig.refreshIn,
+      secret: jwtConfig.refreshSecret,
+      expiresIn: jwtConfig.refreshIn,
     })
   }
 
   refreshToken(token: string): Token | undefined {
     try {
       const { userId }: { userId?: string } = this.jwtService.verify(token, {
-        secret: this.configService.get('security.jwtRefreshSecret', {
+        secret: this.configService.get('security.jwt.refreshSecret', {
           infer: true,
         }),
       })
