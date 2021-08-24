@@ -42,7 +42,7 @@ export class AuthResolver {
   }
 
   @ResolveField('user')
-  async user(@Parent() auth: Auth): Promise<User | undefined> {
-    return await this.auth.getUserFromToken(auth.accessToken)
+  user(@Parent() auth: Auth): Promise<User> | undefined {
+    return this.auth.getUserFromToken(auth.accessToken)
   }
 }
