@@ -1,0 +1,53 @@
+diff --git a/node_modules/@nestjs/graphql/dist/graphql.module.js b/node_modules/@nestjs/graphql/dist/graphql.module.js
+index df1532b..9ae0b95 100644
+--- a/node_modules/@nestjs/graphql/dist/graphql.module.js
++++ b/node_modules/@nestjs/graphql/dist/graphql.module.js
+@@ -17,6 +17,8 @@ const graphql_factory_1 = require("./graphql.factory");
+ const schema_builder_module_1 = require("./schema-builder/schema-builder.module");
+ const services_1 = require("./services");
+ const utils_1 = require("./utils");
++const { createServer } = require('http');
++const { SubscriptionServer } = require('subscriptions-transport-ws');
+ let GraphQLModule = GraphQLModule_1 = class GraphQLModule {
+     constructor(httpAdapterHost, options, graphqlFactory, graphqlTypesLoader, applicationConfig) {
+         this.httpAdapterHost = httpAdapterHost;
+@@ -99,7 +101,38 @@ let GraphQLModule = GraphQLModule_1 = class GraphQLModule {
+         }
+         await this.registerGqlServer(apolloOptions);
+         if (this.options.installSubscriptionHandlers) {
+-            this._apolloServer.installSubscriptionHandlers(httpAdapter.getHttpServer());
++            // this._apolloServer.installSubscriptionHandlers(httpAdapter.getHttpServer());
++
++            // Workaround for @nestjs/graphql not supporting Apollo v3 yet.
++            // See: https://www.apollographql.com/docs/apollo-server/migration/#subscriptions
++            const execute = graphql_1.execute
++            const subscribe = graphql_1.subscribe
++            const SubscriptionServer = require('subscriptions-transport-ws').SubscriptionServer
++            const httpServer = httpAdapter.getHttpServer()
++            const schema = apolloOptions.schema
++            const subscriptionServer = SubscriptionServer.create({
++                // This is the `schema` we just created.
++                schema,
++                // These are imported from `graphql`.
++                execute,
++                subscribe,
++                // Providing `onConnect` is the `SubscriptionServer` equivalent to the
++                // `context` function in `ApolloServer`. Please [see the docs](https://github.com/apollographql/subscriptions-transport-ws#constructoroptions-socketoptions--socketserver)
++                // for more information on this hook.
++                async onConnect(
++                  connectionParams,
++                  webSocket,
++                  context,
++                ) {
++                    // If an object is returned here, it will be passed as the `context`
++                    // argument to your subscription resolvers.
++                }
++            }, {
++                // This is the `httpServer` we created in a previous step.
++                server: httpServer,
++                // This `server` is the instance returned from `new ApolloServer`.
++                path: this._apolloServer.graphqlPath,
++            })
+         }
+     }
+     async onModuleDestroy() {

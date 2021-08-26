@@ -18,6 +18,10 @@ type Req = { req: IncomingMessage }
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, load: [config] }),
+    // FIXME: Currently using `apollo-server-fastify@3.0.0-alpha.4` and patched `@nestjs/graphql@8.0.2`
+    // (`@nestjs/graphql` not supporting Apollo v3 yet) to workaround the following issue:
+    // https://github.com/apollographql/apollo-server/issues/4463#issuecomment-721095821
+    // For the patch see: https://www.apollographql.com/docs/apollo-server/migration/#subscriptions
     GraphQLModule.forRootAsync({
       useFactory: async (configService: ConfigService<Config>) => {
         const graphqlConfig: GraphqlConfig = configService.get('graphql', {

@@ -2,6 +2,10 @@ import 'reflect-metadata'
 import { Logger, ValidationPipe } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
+import {
+  FastifyAdapter,
+  NestFastifyApplication,
+} from '@nestjs/platform-fastify'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import type {
   Config,
@@ -12,7 +16,19 @@ import type {
 import { AppModule } from './app.module'
 
 async function bootstrap(): Promise<void> {
-  const app = await NestFactory.create(AppModule)
+  const app = await NestFactory.create<NestFastifyApplication>(
+    AppModule,
+    new FastifyAdapter({
+      logger: {
+        // FIXME: `redact` does not yet exist in Fastify's types
+        // https://www.fastify.io/docs/latest/Logging/
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        redact: ['req.headers.authorization'],
+        level: 'info',
+      },
+    }),
+  )
 
   // Validation
   app.useGlobalPipes(
