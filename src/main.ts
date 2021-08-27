@@ -64,7 +64,7 @@ async function bootstrap(): Promise<void> {
 
     SwaggerModule.setup(swaggerConfig.path || 'api', app, document, {
       // https://swagger.io/docs/open-source-tools/swagger-ui/usage/configuration/
-      swaggerOptions: {
+      uiConfig: {
         /* Display */
         // If set to true, enables deep linking for tags and operations.
         deepLinking: true,
@@ -87,7 +87,8 @@ async function bootstrap(): Promise<void> {
         // If set to true, it persists authorization data and it would not be lost on browser close/refresh
         persistAuthorization: true,
       },
-      customSiteTitle: 'API Documentation',
+      // Not supported by `fastify-swagger` yet.
+      // customSiteTitle: 'API Documentation',
     })
   }
 
