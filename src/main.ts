@@ -7,13 +7,13 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
-import helmet from 'helmet'
+import { fastifyHelmet } from 'fastify-helmet'
 import type {
   Config,
   CorsConfig,
   NestConfig,
-  SwaggerConfig,
   SecurityConfig,
+  SwaggerConfig,
 } from './configs/config.schema'
 import { AppModule } from './app.module'
 
@@ -43,35 +43,33 @@ async function bootstrap(): Promise<void> {
   })!
 
   if (securityConfig.helmet) {
-    app.use(
-      helmet({
-        // See `WARNING` in: https://docs.nestjs.com/security/helmet
-        // `Express` and `apollo-server-express` has the same issue.
-        contentSecurityPolicy: {
-          directives: {
-            defaultSrc: [`'self'`],
-            styleSrc: [
-              `'self'`,
-              `'unsafe-inline'`,
-              'cdn.jsdelivr.net',
-              'fonts.googleapis.com',
-            ],
-            fontSrc: [`'self'`, 'fonts.gstatic.com'],
-            imgSrc: [`'self'`, 'data:', 'cdn.jsdelivr.net'],
-            scriptSrc: [`'self'`, `https: 'unsafe-inline'`, `cdn.jsdelivr.net`],
-          },
+    await app.register(fastifyHelmet, {
+      // See `WARNING` in: https://docs.nestjs.com/security/helmet
+      // `Express` and `apollo-server-express` has the same issue.
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: [`'self'`],
+          styleSrc: [
+            `'self'`,
+            `'unsafe-inline'`,
+            'cdn.jsdelivr.net',
+            'fonts.googleapis.com',
+          ],
+          fontSrc: [`'self'`, 'fonts.gstatic.com'],
+          imgSrc: [`'self'`, 'data:', 'cdn.jsdelivr.net'],
+          scriptSrc: [`'self'`, `https: 'unsafe-inline'`, `cdn.jsdelivr.net`],
         },
+      },
 
-        crossOriginEmbedderPolicy: false,
-        // TODO: Delete the following options in the next major version of Helmet
-        // See: https://github.com/helmetjs/helmet#reference
-        // crossOriginEmbedderPolicy, crossOriginOpenerPolicy, crossOriginResourcePolicy, and originAgentCluster are not included by default.
-        // They must be explicitly enabled. They will be turned on by default in the next major version of Helmet.
-        crossOriginOpenerPolicy: true,
-        crossOriginResourcePolicy: true,
-        originAgentCluster: true,
-      }),
-    )
+      crossOriginEmbedderPolicy: false,
+      // TODO: Delete the following options in the next major version of Helmet
+      // See: https://github.com/helmetjs/helmet#reference
+      // crossOriginEmbedderPolicy, crossOriginOpenerPolicy, crossOriginResourcePolicy, and originAgentCluster are not included by default.
+      // They must be explicitly enabled. They will be turned on by default in the next major version of Helmet.
+      crossOriginOpenerPolicy: true,
+      crossOriginResourcePolicy: true,
+      originAgentCluster: true,
+    })
   }
 
   // Validation
