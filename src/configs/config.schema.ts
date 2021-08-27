@@ -53,14 +53,14 @@ export class GraphqlConfig {
   sortSchema!: boolean
 }
 
-export class SecurityConfig {
+export class JwtConfig {
   @IsString()
   @IsNotEmpty()
-  jwtAccessSecret!: string
+  accessSecret!: string
 
   @IsString()
   @IsNotEmpty()
-  jwtRefreshSecret!: string
+  refreshSecret!: string
 
   @IsString()
   @IsNotEmpty()
@@ -69,15 +69,24 @@ export class SecurityConfig {
   @IsString()
   @IsNotEmpty()
   refreshIn!: string
+}
+
+export class SecurityConfig {
+  @ValidateNested()
+  jwt = new JwtConfig()
 
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  bcryptSalt?: string
+  passwordBcryptSalt?: string
 
   @ValidateIf((_: SecurityConfig, bcryptSalt: string) => !!bcryptSalt)
   @IsInt()
-  bcryptRound!: number
+  passwordBcryptRound!: number
+
+  @IsOptional()
+  @IsBoolean()
+  helmet?: boolean
 }
 
 export class Config {

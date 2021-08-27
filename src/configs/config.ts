@@ -28,9 +28,12 @@ const defaultConf: Config = deepmerge(new Config(), {
     sortSchema: true,
   },
   security: {
-    expiresIn: '2m',
-    refreshIn: '7d',
-    bcryptRound: 10,
+    jwt: {
+      expiresIn: '2m',
+      refreshIn: '7d',
+    },
+    passwordBcryptRound: 10,
+    helmet: true,
   },
 })
 

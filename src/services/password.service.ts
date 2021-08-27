@@ -9,7 +9,9 @@ export class PasswordService {
     const securityConfig: SecurityConfig = this.configService.get('security', {
       infer: true,
     })!
-    return securityConfig.bcryptSalt || securityConfig.bcryptRound
+    return (
+      securityConfig.passwordBcryptSalt || securityConfig.passwordBcryptRound
+    )
   }
 
   constructor(private configService: ConfigService<Config>) {}
