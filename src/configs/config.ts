@@ -33,6 +33,7 @@ const defaultConf: Config = deepmerge(new Config(), {
       refreshIn: '7d',
     },
     passwordBcryptRound: 10,
+    helmet: true,
   },
 })
 

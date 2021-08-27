@@ -83,6 +83,10 @@ export class SecurityConfig {
   @ValidateIf((_: SecurityConfig, bcryptSalt: string) => !!bcryptSalt)
   @IsInt()
   passwordBcryptRound!: number
+
+  @IsOptional()
+  @IsBoolean()
+  helmet?: boolean
 }
 
 export class Config {
